@@ -1,0 +1,164 @@
+\documentclass[10pt, letterpaper]{article}
+
+% --- Packages ---
+\usepackage{amsmath}          % For advanced math typesetting (like \tag, \sum, \prod, \exp, \log, \mathcal, \left, \right)
+\usepackage{amssymb}          % For math symbols like \mathcal
+\usepackage{amsfonts}         % For math fonts 
+\usepackage[margin=1in]{geometry}% Set margins
+\usepackage{bm}               % For bold math if needed (though not used here)
+\usepackage[utf8]{inputenc}   % Input encoding
+\usepackage[T1]{fontenc}    % Font encoding
+\usepackage{hyperref}         % Clickable links/references (optional)
+\usepackage{xcolor}
+
+% --- Document Setup ---
+\title{APPENDIX}
+\author{} % No author for appendix usually
+\date{}    % No date for appendix
+
+% Define Gamma distribution notation
+\newcommand{\Gdist}{\mathcal{G}} % Use \mathcal{G} as in the PDF
+% Define C(a,b) function notation if desired for clarity, or write inline
+\newcommand{\Cfunc}[2]{#2^{#1} / \Gamma(#1)} 
+\newcommand{\correctToHere}{{\color{red}\large MATCHES ORIGINAL TEXT UP TO THIS POINT. CONTINUE CHECKING FROM HERE.}}
+
+
+% --- Document Start ---
+\begin{document}
+\maketitle
+\thispagestyle{empty} % No page number on title page
+
+\section*{Full Conditional Posterior Distributions}
+
+\correctToHere
+
+Let $Y = \{ N_1, \dots, N_n; t_1^*, \dots, t_n^*; X_1, \dots, X_n \}$ denote the observed data, where $N_i = (N_{i1}, \dots, N_{iM_i})'$ and $X_i = (x_{i1}, \dots, x_{iM_i})'$. Also, let $\Phi = \{ \phi_i, \phi_{ij}, i = 1, \dots, n; j = 1, \dots, M_i \}$, $\nu = (\nu_0, \nu_1, \dots, \nu_M)'$, and $\Gamma = \{ \gamma_{hk}, h = 1, \dots, M; k = 1, \dots, p \}$. Given the above notation, the likelihood is proportional to
+\begin{equation} \label{eq:A1}
+L(\Phi, \nu, \Gamma | Y) = \prod_{i=1}^n \prod_{j=1}^{M_i} \left( \phi_i \nu_0 \lambda_{0j}^* \prod_{h=1}^j \phi_{ih} \nu_h \prod_{k=1}^p \gamma_{hk}^{x_{ijk}} \right)^{N_{ij}} \exp \left\{ - r_{ij} \phi_i \nu_0 \lambda_{0j}^* \prod_{h=1}^j \phi_{ih} \nu_h \prod_{k=1}^p \gamma_{hk}^{x_{ijk}} \right\}
+\tag{A-1}
+\end{equation}
+
+Under the dynamic gamma model, the full conditional posterior distributions of the $\phi_i$ and $\phi_{ij}$'s are also gamma due to the Poisson form of (A-1):
+\begin{align} 
+\pi(\phi_i | \cdot) &= G_i = \Gdist(\psi_1 + N_i^*, \psi_1 + m_i^*) \label{eq:A2} \tag{A-2} \\
+\pi(\phi_{is} | \cdot) &= G_{is} = \Gdist(\psi_2 + N_{is}^*, \psi_2 + m_{is}^*) \label{eq:A3} \tag{A-3} 
+\end{align}
+where the notation $a|\cdot$ denotes a given all other variables and $N_i^* = \sum_{j=1}^{M_i} N_{ij}$, $N_{is}^* = \sum_{j=s}^{M_i} N_{ij}$
+\begin{align*}
+m_i^* &= \nu_0 \sum_{j=1}^{M_i} r_{ij} \lambda_{0j}^* \prod_{h=1}^j \phi_{ih} \nu_h \prod_{k=1}^p \gamma_{hk}^{x_{ijk}} \\
+m_{is}^* &= \phi_i \nu_0 \sum_{j=s}^{M_i} r_{ij} \lambda_{0j}^* \left( \prod_{h=1}^j \nu_h \prod_{k=1}^p \gamma_{hk}^{x_{ijk}} \right) \prod_{l \ne s}^j \phi_{il}, 
+\end{align*}
+for $s=1, \dots, M_i$. The full conditional posterior densities of the elements of $\nu$ and $\Gamma$ are
+\begin{align} 
+\pi(\nu_0 | \cdot) &= \Gdist \left( \kappa + \sum_{i=1}^n N_i^*, \kappa + \sum_{i=1}^n \phi_i \sum_{j=1}^{M_i} r_{ij} \lambda_{0j}^* \prod_{h=1}^j \phi_{ih} \nu_h \prod_{k=1}^p \gamma_{hk}^{x_{ijk}} \right) \label{eq:A4} \tag{A-4} \\
+\pi(\nu_s | \cdot) &= \Gdist \left( \psi_3 + \sum_{i \in R_s} N_{is}^*, \psi_3 + \nu_0 \sum_{i \in R_s} \sum_{j=s}^{M_i} r_{ij} \lambda_{0j}^* \phi_i \prod_{h=1}^j \phi_{ih} \left( \prod_{l=1, l \ne s}^j \nu_l \right) \left( \prod_{k=1}^p \gamma_{hk}^{x_{ijk}} \right) \right) \label{eq:A5} \tag{A-5} \\
+\pi(\gamma_{sk} | \cdot) &\propto \exp \left\{ \left( \psi_4 + \sum_{i \in R_s} \sum_{j=s}^{M_i} N_{ij} x_{ijk} \right) \log(\gamma_{sk}) - \gamma_{sk} \psi_4 \right. \nonumber \\
+& \qquad \left. - \nu_0 \sum_{i \in R_s} \sum_{j=s}^{M_i} r_{ij} \phi_i \lambda_{0j}^* \prod_{h=1}^j \phi_{ih} \nu_h \left( \prod_{l=1, l \ne k}^p \gamma_{hl}^{x_{ijl}} \right) \gamma_{sk}^{x_{ijk}} \right\} \label{eq:A6} \tag{A-6}
+\end{align}
+where $R_s = \{ i : M_i \ge s \}$, for $s=1, \dots, M$.
+
+\vfill
+\centerline{1}
+\clearpage % End of Page 1
+
+When the Dirichlet process is used to model the frailty terms, the full conditionals of $\phi_i$ and $\phi_{is}$ are not $G_i$ and $G_{is}$. Using the P\'{o}lya urn representation of the Dirichlet process (Blackwell and MacQueen, 1973; MacEachern, 1994; West, 1990), one can show that the prior distribution of $\phi_i$ given $\Phi^{(i)} = (\phi_1, \dots, \phi_{i-1}, \phi_{i+1}, \dots, \phi_n)'$ is the mixture
+\begin{equation} \label{eq:A7}
+\left( \frac{\alpha_{01}}{\alpha_{01} + n - 1} \right) G_{01} + \left( \frac{1}{\alpha_{01} + n - 1} \right) \sum_{l=1}^{h^{(i)}} n_l^{(i)} \delta_{\theta_l^{(i)}},
+\tag{A-7}
+\end{equation}
+where $\delta_\theta$ denotes the degenerate distribution with all its mass at $\theta$, and the prior for $\phi_{is}$ given $\Phi_s^{(i)} = \{ \phi_{i's} : i' \in R_s, i' \ne i \}$ and $n_{(s)}$ total subjects in $R_s$ is
+\begin{equation} \label{eq:A8}
+\left( \frac{\alpha_{02}}{\alpha_{02} + n_{(s)} - 1} \right) G_{02} + \left( \frac{1}{\alpha_{02} + n_{(s)} - 1} \right) \sum_{l=1}^{h_s^{(i)}} n_{sl}^{(i)} \delta_{\theta_{sl}^{(i)}},
+\tag{A-8}
+\end{equation}
+where $\theta^{(i)}$ and $\theta_s^{(i)}$ denote the $h^{(i)}$ and $h_s^{(i)}$ unique values of $\Phi^{(i)}$ and $\Phi_s^{(i)}$, respectively, $n_l^{(i)}$ elements of $\Phi^{(i)}$ have value $\theta_l^{(i)}$, and $n_{sl}^{(i)}$ elements of $\Phi_s^{(i)}$ have value $\theta_{sl}^{(i)}$. After factoring in the likelihood, the full conditional posterior of $\phi_i$ is
+\begin{equation} \label{eq:A9}
+q_{i0} G_i + \sum_{l=1}^{h^{(i)}} q_{il} \delta_{\theta_l^{(i)}}
+\tag{A-9}
+\end{equation}
+where
+\[
+q_{il} = 
+\begin{cases} 
+c_1 \alpha_{01} \frac{C(\psi_1, \psi_1)}{C(\psi_1 + N_i^*, \psi_1 + m_i^*)} & l = 0 \\
+c_1 n_l^{(i)} (\theta_l^{(i)})^{N_i^*} \exp\{-\theta_l^{(i)} m_i^*\} & l > 0, 
+\end{cases}
+\]
+$C(a,b) = b^a / \Gamma(a)$, and $c_1$ is a normalizing constant. Similarly, the full conditional posterior of $\phi_{is}$ ($s=1, \dots, M_i$) is
+\begin{equation} \label{eq:A10}
+q_{is0} G_{is} + \sum_{l=1}^{h_s^{(i)}} q_{isl} \delta_{\theta_{sl}^{(i)}}
+\tag{A-10}
+\end{equation}
+where
+\[
+q_{isl} = 
+\begin{cases} 
+c_{s+1} \alpha_{02} \frac{C(\psi_2, \psi_2)}{C(\psi_2 + N_{is}^*, \psi_2 + m_{is}^*)} & l = 0 \\
+c_{s+1} n_{sl}^{(i)} (\theta_{sl}^{(i)})^{N_{is}^*} \exp\{-\theta_{sl}^{(i)} m_{is}^*\} & l > 0. 
+\end{cases}
+\]
+Thus, the full conditional distributions of $\phi_i$ and $(\phi_{i1}, \dots, \phi_{iM_i})'$ are mixtures of the gamma posteriors obtained under the dynamic gamma model and multinomial distributions with
+
+\vfill
+\centerline{2}
+\clearpage % End of Page 2
+
+support on the unique values of each frailty component.
+
+\subsection*{Updating Algorithm}
+
+In order to sample efficiently under the Dirichlet process mixture, we invoke a sampling scheme similar to that provided by MacEachern (1994) and West et al. (1994). Let there be $h$ unique values in $(\phi_1, \dots, \phi_n)'$ and $h_s$ unique values in $\{ \phi_{is} : i \in R_s \}$, which we denote by $\theta = (\theta_1, \dots, \theta_h)'$ and $\theta_s = (\theta_{s1}, \dots, \theta_{sh_s})'$, respectively, for $s=1, \dots, M$. We also define the discrete random variables $S_i$ and $S_{is}$ such that $S_i = k$ if $\phi_i = \theta_k$ and $S_{is} = l$ if $\phi_{is} = \theta_{sl}$, for $i \in R_s$. Our MCMC algorithm proceeds as follows:
+
+\paragraph{Step 1.} Sample $\nu_0$ from (A-4), given the current values of $\Phi, \nu_1, \dots, \nu_M$, and $\Gamma$.
+
+\paragraph{Step 2.1.} Sample $S_i$, for $i=1, \dots, n$ from a multinomial distribution with Pr$(S_i = l) = q_{il}$, for $l=0, 1, \dots, h^{(i)}$, with a new $\phi_i$ drawn from $G_i$ if $S_i = 0$.
+
+\paragraph{Step 2.2.} Given the updated values of $h$ and $S_1, \dots, S_n$, generate a new $\theta$ by sampling each $\theta_k$ from its full conditional posterior distribution, $\Gdist(\psi_1 + \sum_{i:S_i=k} N_i^*, \psi_1 + \sum_{i:S_i=k} m_i^*)$, for $k=1, \dots, h$. Assign the appropriate value of $\theta^{(i)}$ to $\phi_i$ as indicated by $S_i$.
+
+For $s=1, \dots, M$, perform the following steps:
+
+\paragraph{Step 3.s(a).} For $i \in R_s$, sample $S_{is}$ from the multinomial distribution with Pr$(S_{is} = l) = q_{isl}$, for $l=0, 1, \dots, h_s^{(i)}$, with a new $\phi_{is}$ drawn from $G_{is}$ if $S_{is} = 0$.
+
+\paragraph{Step 3.s(b).} Update $\theta_s$ by sampling each $\theta_{sl}$ from the full conditional posterior, $\Gdist(\psi_2 + \sum_{i:S_{is}=l} N_{is}^*, \psi_2 + \sum_{i:S_{is}=l} m_{is}^*)$, for $l=1, \dots, h_s$. Assign the appropriate value of $\theta_s^{(i)}$ to $\phi_{is}$.
+
+\paragraph{Step 3.s(c-d).} Sample $\nu_s$ from (A-5) and $\gamma_{sk}$ from (A-6) for $k=1, \dots, p$.
+
+\vfill
+\centerline{3}
+\clearpage % End of Page 3
+
+\paragraph{Step 4.1-4.2.} Update $\psi_1$ and $\psi_2$. Under the DP model, the full conditional posterior densities of $\psi_1$ and $\psi_2$ depend only on $\theta$ and $\theta_1, \dots, \theta_M$,
+\begin{align} 
+\pi(\psi_1 | \cdot) &\propto \left( \frac{\psi_1^{\psi_1}}{\Gamma(\psi_1)} \right)^h \psi_1^{a_1 - 1} \exp \left\{ - \psi_1 \left( b_1 + \sum_{k=1}^h (\theta_k - \log \theta_k) \right) \right\} \label{eq:A11} \tag{A-11} \\
+\pi(\psi_2 | \cdot) &\propto \left( \frac{\psi_2^{\psi_2}}{\Gamma(\psi_2)} \right)^{\sum_{s=1}^M h_s} \psi_2^{a_2 - 1} \exp \left\{ - \psi_2 \left( b_2 + \sum_{s=1}^M \sum_{k=1}^{h_s} (\theta_{sk} - \log \theta_{sk}) \right) \right\}, \label{eq:A12} \tag{A-12} 
+\end{align}
+while under the dynamic gamma frailty model, the posteriors depend on each $\phi_i$ and $\phi_{ij}$, respectively. Since (A-11) and (A-12) do not have closed forms, we recommend updating $\psi_1$ and $\psi_2$ using a Metropolis-Hastings random walk.
+
+In our analysis of the chemoprevention data (Section 4), we modified the algorithm slightly to speed up computation. In steps 2.1 and 3.s(a), we sampled each $S_i$ and $S_{is}$ using the cluster configuration at the previous iteration. This allowed us vectorize the code used to sample these latent variables and remove computationally intensive loops. Although this modification may have slowed convergence down slightly, it is unlikely that it affected our results due to the length of our chain.
+
+It is also fairly straightforward to sample from predictive distributions at each iteration of the Gibbs sampler. Given $\theta$ and $\theta_1, \dots, \theta_M$, the frailty of a future subject, $\xi_{n+1}$, may be predicted by sampling from the distributions
+\begin{align} 
+\pi(\phi_{n+1} | \Phi) &= \left( \frac{\alpha_{01}}{\alpha_{01} + n} \right) G_{01} + \left( \frac{1}{\alpha_{01} + n} \right) \sum_{l=1}^h n_l \delta_{\theta_l} \label{eq:A13} \tag{A-13} \\
+\pi(\phi_{(n+1)s} | \Phi_s) &= \left( \frac{\alpha_{02}}{\alpha_{02} + n_s} \right) G_{02} + \left( \frac{1}{\alpha_{02} + n_s} \right) \sum_{l=1}^{h_s} n_{sl} \delta_{\theta_{sl}} \label{eq:A14} \tag{A-14} 
+\end{align}
+for $s=1, \dots, M$. Count data for a future subject may then be simulated using the non-homogeneous Poisson process in equation (4), Section 2.1.
+
+\subsection*{References}
+
+Blackwell, D. and MacQueen, J.B. (1973). Ferguson distributions via P\'{o}lya urn schemes. \textit{Annals of Statistics} \textbf{1}, 353-355.
+
+\vfill
+\centerline{4}
+\clearpage % End of Page 4
+
+MacEachern, S.N. (1994). Estimating normal means with a conjugate style Dirichlet process prior. \textit{Communications in Statistics - Simulation and Computation} \textbf{23}, 727-741.
+
+West, M. (1990). Bayesian kernel density estimation. ISDS Discussion Paper Series \textbf{90-A02}, Duke University.
+
+West, M., M\"{u}ller, P., and Escobar, M.D. (1994). Hierarchical priors and mixture models with application in regression and density estimation. In \textit{Aspects of Uncertainty: A Tribute to D.V. Lindley}, A. Smith and P. Freeman (eds), 363-386. New York: Wiley.
+
+\vfill
+\centerline{5}
+\clearpage % End of Page 5
+
+\end{document}
